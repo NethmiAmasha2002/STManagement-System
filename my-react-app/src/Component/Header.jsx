@@ -1,5 +1,6 @@
 import React from "react";
-import departmentImage from '../images/Logo.png'; // Replace with actual path
+import departmentImage from '../images/Logo.png';
+import '../App.css'; // Make sure to import the CSS file
 
 function Header() {
   return (

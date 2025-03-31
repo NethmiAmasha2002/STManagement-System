@@ -19,6 +19,7 @@ import EditCourse from './Component/EditCourse';
 import EditStudent from './Component/EditStudent';
 import Audit from './Component/Audit';
 import AddCourseForm from './Component/AddCourse';
+import UpdateCourseForm from './Component/UpdateCourse';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -45,7 +46,8 @@ function App() {
        <Route path="/ForgetPss" element={<ForgetPss />} />
        <Route path="/Audit" element={<Audit/>}/>
        <Route path="/AddCourse" element={<AddCourseForm/>}/>
-      
+
+       <Route path="/UpdateCourse/:id" element={<UpdateCourseForm />} />
       <Route path="/EditStudent/:id" element={<EditStudent />} />
       </Routes>
       <Footer />

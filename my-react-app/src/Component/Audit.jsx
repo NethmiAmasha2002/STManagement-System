@@ -106,19 +106,12 @@ const Audit = () => {
     return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
-  const handleBackToDashboard = () => {
-    navigate('/Dashboard');
-  };
-
   return (
     <div className="audit-page">
       {/* Header */}
       <div className="audit-container">
         <div className="audit-header">
           <h2 className="page-title">Audit Trail</h2>
-          <button className="back-button" onClick={handleBackToDashboard}>
-            Back to Dashboard
-          </button>
         </div>
 
         {/* Filters Section */}

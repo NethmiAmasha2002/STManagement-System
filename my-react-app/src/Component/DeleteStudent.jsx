@@ -424,20 +424,14 @@ const handleFilter = async (e) => {
                     <span className="info-text">{selectedStudent.indexNumber}</span>
                   </div>
                   
-                  <div className="info-item">
-                    <span className="info-label">Program:</span>
-                    <span className="info-text">{selectedStudent.degreeProgram}</span>
-                  </div>
+                  
                   
                   <div className="info-item">
                     <span className="info-label">Email:</span>
                     <span className="info-text">{selectedStudent.email}</span>
                   </div>
 
-                  <div className="info-item">
-                    <span className="info-label">Intake:</span>
-                    <span className="info-text">{selectedStudent.intake}</span>
-                  </div>
+                  
                   
                   <button className="remove-button" onClick={handleRemove}>
                     <i className="fas fa-trash-alt"></i> Remove Student
