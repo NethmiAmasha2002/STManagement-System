@@ -43,9 +43,9 @@ function App() {
         <Route path="/Reminders" element={<Reminders />} />
        <Route path="/register" element={<Register />} />
        <Route path="/ForgetPss" element={<ForgetPss />} />
-      <Route path="/Audit" element={<Audit/>}/>
-      <Route path="/AddCourse" element={<AddCourseForm/>}/>
-
+       <Route path="/Audit" element={<Audit/>}/>
+       <Route path="/AddCourse" element={<AddCourseForm/>}/>
+      
       <Route path="/EditStudent/:id" element={<EditStudent />} />
       </Routes>
       <Footer />

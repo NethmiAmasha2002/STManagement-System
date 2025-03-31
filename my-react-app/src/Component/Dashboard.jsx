@@ -327,7 +327,7 @@ const Dashboard = () => {
 
   // Navigation functions
   function goToAddStudent() {
-    navigate('/AddCourse');
+    navigate('/AddStudent');
   }
 
   function goToDeleteStudent() {
@@ -335,7 +335,7 @@ const Dashboard = () => {
   }
 
   function goToEditCourse() {
-    navigate('/EditCourse');
+    navigate('/AddCourse');
   }
 
   function goToRejister() {

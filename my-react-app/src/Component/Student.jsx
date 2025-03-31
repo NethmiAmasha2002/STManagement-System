@@ -170,17 +170,38 @@
 // export default Students;
 
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getDatabase, ref, onValue } from 'firebase/database';
-import studentIcon from '../images/ST.jpeg'; // Update path as needed
-import '../App.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getDatabase, ref, onValue } from "firebase/database"; // Firebase imports
+import "../App.css";
+import studentIcon from '../images/ST.jpeg'; // Update with actual icon path
 
 function Students() {
   const navigate = useNavigate();
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState([]); // Initially empty
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredStudents, setFilteredStudents] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+
+//   // Fetch students from Firebase
+//   useEffect(() => {
+//     const db = getDatabase();
+//     const studentsRef = ref(db, "Students");
+
+//     onValue(studentsRef, (snapshot) => {
+//       if (snapshot.exists()) {
+//         const studentsData = snapshot.val();
+//         const studentsArray = Object.keys(studentsData).map((key) => ({
+//           id: key,
+//           ...studentsData[key],
+//         }));
+//         setStudents(studentsArray);
+//         setFilteredStudents(studentsArray); // Initialize filtered list
+//       } else {
+//         setStudents([]);
+//         setFilteredStudents([]);
+//       }
+//     });
+//   }, []);
 
   useEffect(() => {
     const db = getDatabase();
@@ -227,6 +248,9 @@ function Students() {
     }
   }, [searchTerm, students]); // Run when searchTerm or students change
   
+  
+  
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -235,8 +259,15 @@ function Students() {
     navigate('/AddStudent');
   };
 
-  const handleStudentClick = (student) => {
+//   const handleStudentClick = (student) => {
+//     navigate(`/StudentDetails/${student.id}`, { state: { student } });
+//   };
+const handleStudentClick = (student) => {
     navigate(`/EditStudent/${student.id}`, { state: { student } });
+  };
+
+  const handleLogout = () => {
+    navigate('/Login');
   };
 
   return (
@@ -246,6 +277,12 @@ function Students() {
           <h2 className="page-title">Student Management</h2>
           <div className="controls-row">
             <div className="search-container">
+            <div>
+          <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+
               <i className="fas fa-search search-icon"></i>
               <input
                 type="text"
@@ -255,6 +292,7 @@ function Students() {
                 className="search-input"
               />
             </div>
+           
           </div>
         </div>
 

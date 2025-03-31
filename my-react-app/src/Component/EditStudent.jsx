@@ -705,7 +705,7 @@ const handleUpdate = (e) => {
       });
   };
   
-  const logUpdateDetails = (id, description) => {
+  const logUpdateDetails = async (id, description) => {
     const db = getDatabase();
     const auth = getAuth();
     const user = auth.currentUser; 
@@ -722,12 +722,25 @@ const handleUpdate = (e) => {
         return;
     }
 
+    const logsRef = ref(db, 'logs');
+    const logsSnapshot = await get(logsRef);
+
+    let newLogId = 1; // Default first logId
+    if (logsSnapshot.exists()) {
+      // Get max existing logId
+      const logsArray = Object.values(logsSnapshot.val());
+      const maxLogId = Math.max(...logsArray.map(log => log.logId || 0)); 
+      newLogId = maxLogId + 1;
+    }
+
     // Create log data with description, current user, and timestamp
     const logData = {
+      logId: newLogId,
       description: `${description} for student with ID: ${id}`,
       updatedBy: user.email || "Unknown User",
       updatedAt: new Date().toISOString(),
-      studentId: id // Only saving the student ID for reference
+      studentId: id ,// Only saving the student ID for reference
+      type: "Student Management"
     };
   
     // Get a reference to the 'logs' node and push the new log entry

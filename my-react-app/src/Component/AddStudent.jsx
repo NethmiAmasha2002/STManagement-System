@@ -255,11 +255,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaUserGraduate, FaBook, FaIdCard, FaMapMarkerAlt, FaVenusMars } from 'react-icons/fa';
-import { getDatabase, ref, set, get, child } from 'firebase/database';
+import { getDatabase, ref, set, get, child, push} from 'firebase/database';
 import { database } from '../firebase'; // Adjust the import based on your project structure
 import Header from './Header';
 import Footer from './Footer';
 import '../App.css';
+import { getAuth } from "firebase/auth";
 
 const AddStudent = () => {
   const navigate = useNavigate();
@@ -269,8 +270,8 @@ const AddStudent = () => {
     email: '',
     contactNumber: '',
     dateOfBirth: '',
-    year: '',
-    semester: '',
+    intake: '',
+    degreeProgram: '',
     indexNumber: '',
     gender: '',
     address: ''
@@ -303,6 +304,7 @@ const AddStudent = () => {
         // Save student data under the index number
         await set(ref(database, `Students/${indexNumber}`), formData);
         alert("Student added successfully!");
+        logUpdateDetails(indexNumber, "Add new student")
         navigate('/Dashboard');
       }
     } catch (error) {
@@ -314,6 +316,55 @@ const AddStudent = () => {
   const handleCancel = () => {
     navigate('/Dashboard');
   };
+
+    const logUpdateDetails = async (id, description) => {
+      const db = getDatabase();
+      const auth = getAuth();
+      const user = auth.currentUser; 
+    
+     // Ensure studentId is defined before saving
+      if (!id) {
+        console.error("Student ID is undefined");
+        return;
+      }
+  
+      // Ensure user is logged in
+      if (!user) {
+          console.error("No user is logged in. Cannot save log.");
+          return;
+      }
+
+      const logsRef = ref(db, 'logs');
+          const logsSnapshot = await get(logsRef);
+      
+          let newLogId = 1; // Default first logId
+          if (logsSnapshot.exists()) {
+            // Get max existing logId
+            const logsArray = Object.values(logsSnapshot.val());
+            const maxLogId = Math.max(...logsArray.map(log => log.logId || 0)); 
+            newLogId = maxLogId + 1;
+          }
+  
+      // Create log data with description, current user, and timestamp
+      const logData = {
+        logId: newLogId,
+        description: `${description} for student with ID: ${id}`,
+        updatedBy: user.email || "Unknown User",
+        updatedAt: new Date().toISOString(),
+        studentId: id ,// Only saving the student ID for reference
+        type: "Student Management"
+      };
+    
+      // Get a reference to the 'logs' node and push the new log entry
+      const logRef = ref(db, 'logs');
+      push(logRef, logData)
+        .then(() => {
+          console.log("Log saved successfully");
+        })
+        .catch((error) => {
+          console.error("Error saving log data:", error);
+        });
+    };
 
   return (
     <div className="app-container">
@@ -404,10 +455,11 @@ const AddStudent = () => {
                   name="dateOfBirth"
                   value={formData.dateOfBirth}
                   onChange={handleChange}
-                  className="form-input date-input"
+                  className="form-input"
                   required
                 />
               </div>
+
               <div className="form-field">
                 <label className="form-label">
                   <FaVenusMars className="field-icon" />
@@ -431,37 +483,38 @@ const AddStudent = () => {
               <div className="form-field">
                 <label className="form-label">
                   <FaUserGraduate className="field-icon" />
-                  <span>Year</span>
+                  <span>Intake</span>
                 </label>
                 <select
-                  name="year"
-                  value={formData.year}
+                  name="intake"
+                  value={formData.intake}
                   onChange={handleChange}
                   className="form-input form-select dark-select"
                   required
                 >
                   <option value="">Select Intake</option>
-                  <option value="1">Intake 42</option>
-                  <option value="2">Intake 41</option>
-                  <option value="3">Intake 40</option>
-                  <option value="4">Intake 39</option>
+                  <option value="intake39">Intake 39</option>
+                  <option value="intake40">Intake 40</option>
+                  <option value="intake41">Intake 41</option>
+                  <option value="intake42">Intake 42</option>
                 </select>
               </div>
               <div className="form-field">
                 <label className="form-label">
                   <FaBook className="field-icon" />
-                  <span>Semester</span>
+                  <span>Degree Program</span>
                 </label>
                 <select
-                  name="Degree Programme"
-                  value={formData.semester}
+                  name="degreeProgram"
+                  value={formData.degreeProgram}
                   onChange={handleChange}
                   className="form-input form-select dark-select"
                   required
                 >
-                  <option value="">Select Degree</option>
-                  <option value="1">Software Engineering</option>
-                  <option value="2">Computer Science</option>
+                  <option value="">Select Degree Program</option>
+                  <option value="cs">Computer Science</option>
+                  <option value="se">Software Enginering</option>
+                  <option value="it">IT</option>
                 </select>
               </div>
             </div>

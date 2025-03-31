@@ -308,9 +308,10 @@ import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { FaBell, FaTrash, FaPlus } from 'react-icons/fa';
-import { ref, push, set, onValue, remove } from 'firebase/database';
+import {getDatabase, ref, push, set, onValue, remove } from 'firebase/database';
 import { database } from '../firebase'; // Ensure correct path to your Firebase config
 import '../App.css';
+import { getAuth } from "firebase/auth";
 
 const Reminders = () => {
   const navigate = useNavigate();
@@ -393,6 +394,7 @@ const Reminders = () => {
     // Save to Firebase
     const reminderRef = push(ref(database, 'Reminders'));
     await set(reminderRef, newReminder);
+    logUpdateDetails("Add Reminder")
 
     // Clear form
     setReminderTitle('');
@@ -405,11 +407,61 @@ const Reminders = () => {
     await remove(ref(database, `Reminders/${id}`));
   };
 
+  // Handle navigation back to dashboard
+  const handleBackToDashboard = () => {
+    navigate('/Dashboard');
+  };
+
+   const logUpdateDetails = async (description) => {
+        const db = getDatabase();
+        const auth = getAuth();
+        const user = auth.currentUser; 
+    
+        // Ensure user is logged in
+        if (!user) {
+            console.error("No user is logged in. Cannot save log.");
+            return;
+        }
+
+        const logsRef = ref(db, 'logs');
+                  const logsSnapshot = await get(logsRef);
+              
+                  let newLogId = 1; // Default first logId
+                  if (logsSnapshot.exists()) {
+                    // Get max existing logId
+                    const logsArray = Object.values(logsSnapshot.val());
+                    const maxLogId = Math.max(...logsArray.map(log => log.logId || 0)); 
+                    newLogId = maxLogId + 1;
+                  }
+    
+        // Create log data with description, current user, and timestamp
+        const logData = {
+          logId: newLogId,
+          description: `${description} `,
+          updatedBy: user.email || "Unknown User",
+          updatedAt: new Date().toISOString(),
+          type: "Reminders"
+        };
+      
+        // Get a reference to the 'logs' node and push the new log entry
+        const logRef = ref(db, 'logs');
+        push(logRef, logData)
+          .then(() => {
+            console.log("Log saved successfully");
+          })
+          .catch((error) => {
+            console.error("Error saving log data:", error);
+          });
+      };
+
   return (
     <div className="reminders-page">
       <div className="reminders-container">
         <div className="reminders-header">
           <h2 className="page-title">Reminders Management</h2>
+          <button className="back-button" onClick={handleBackToDashboard}>
+            Back to Dashboard
+          </button>
         </div>
 
         <div className="reminders-content">
