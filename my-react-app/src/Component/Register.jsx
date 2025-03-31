@@ -31,18 +31,7 @@ const Register = () => {
   };
 
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-    
-//     // Validate passwords match
-//     if (formData.password !== formData.confirmPassword) {
-//       alert("Passwords don't match!");
-//       return;
-//     }
-    
-//     // Navigate to login page after registration
-//     navigate('/login');
-//   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

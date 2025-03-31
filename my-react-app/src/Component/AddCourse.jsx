@@ -1,16 +1,12 @@
 
-
-
-
-
-
-
 import React, { useState } from 'react';
 import { getDatabase, ref, set,  get, push } from 'firebase/database';
 import { database } from '../firebase';
 import "../App.css";
 import teachingIcon from '../images/add.jpg'; // Update path as needed
 import { getAuth } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+
 
 const AddCourseForm = () => {
   const [moduleId, setModuleId] = useState('');
@@ -26,6 +22,8 @@ const AddCourseForm = () => {
     { label: 'Third Year', value: '3', semesters: ['Semester 5', 'Semester 6'] },
     { label: 'Fourth Year', value: '4', semesters: ['Semester 7', 'Semester 8'] }
   ];
+
+  const navigate = useNavigate();
 
   const handleYearChange = (e) => {
     const selectedYear = e.target.value;
@@ -65,7 +63,8 @@ const AddCourseForm = () => {
         // Hide notification after 3 seconds
         setTimeout(() => {
           setNotification({ show: false, message: '', type: '' });
-        }, 3000);
+          navigate('/CourseDetails');
+        }, 1500);
       } catch (error) {
         console.error("Error adding course:", error);
         setNotification({
@@ -129,6 +128,7 @@ const AddCourseForm = () => {
         push(logRef, logData)
           .then(() => {
             console.log("Log saved successfully");
+           
           })
           .catch((error) => {
             console.error("Error saving log data:", error);
