@@ -891,10 +891,10 @@ const AddStudent = () => {
                     required
                   >
                     <option value="">Select Intake</option>
-                    <option value="intake39">Intake 39</option>
-                    <option value="intake40">Intake 40</option>
-                    <option value="intake41">Intake 41</option>
-                    <option value="intake42">Intake 42</option>
+                    <option value="Intake 39">Intake 39</option>
+                    <option value="Intake 40">Intake 40</option>
+                    <option value="Intake 41">Intake 41</option>
+                    <option value="Intake 42">Intake 42</option>
                   </select>
                 </div>
                 <div className="form-field">
@@ -910,9 +910,9 @@ const AddStudent = () => {
                     required
                   >
                     <option value="">Select Degree Program</option>
-                    <option value="cs">Computer Science</option>
-                    <option value="se">Software Enginering</option>
-                    <option value="it">IT</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Software Engineering">Software Engineering</option>
+                    <option value="IT">IT</option>
                   </select>
                 </div>
               </div>
