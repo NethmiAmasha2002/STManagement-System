@@ -116,16 +116,7 @@ const Audit = () => {
 
         {/* Filters Section */}
         <div className="audit-filters-light">
-          {/* <div className="search-container">
-            <FaSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search audit logs..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-          </div> */}
+          {}
           
           <div className="date-range-selector">
             <div className="date-picker-button" onClick={() => setShowCalendar(!showCalendar)}>

@@ -1,16 +1,13 @@
 
-
-
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaUserGraduate, FaBook, FaIdCard, FaMapMarkerAlt, FaVenusMars } from 'react-icons/fa';
 import { getDatabase, ref, set, get, child, push} from 'firebase/database';
-import { database } from '../firebase'; // Adjust the import based on your project structure
+import { database } from '../firebase'; 
 import Header from './Header';
 import Footer from './Footer';
 import '../App.css';
- // Make sure to create this CSS file
+ 
 import { getAuth } from "firebase/auth";
 
 const AddStudent = () => {
